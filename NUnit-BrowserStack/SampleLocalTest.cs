@@ -15,6 +15,7 @@ namespace BrowserStack
     {
       driver.Navigate().GoToUrl("http://bs-local.com:45454/");
       StringAssert.Contains("BrowserStack Local", driver.Title);
+
     }
   }
 }
