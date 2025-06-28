@@ -2,8 +2,9 @@ using NUnit.Framework;
 using OpenQA.Selenium;
 using System.Threading;
 using BrowserStack.PageObjects;
+using BrowserStack;
 
-namespace BrowserStack
+namespace SingleTest.Testcases
 {
     [TestFixture]
     [Category("KolkataBugbashECom")]
@@ -22,12 +23,14 @@ namespace BrowserStack
         }
 
         [Test]
+        [Description("Verify that the home page title is 'StackDemo' after navigation.")]
         public void VerifyTitle()
         {
             Assert.AreEqual("StackDemo", page.GetTitle());
         }
 
         [Test]
+        [Description("Verify that all products on the page can be added to the cart and the cart count reflects the total.")]
         public void VerifyProdcutsCanBeAddedToCart()
         {
             var products = page.GetAddToCartButtons();
@@ -38,6 +41,7 @@ namespace BrowserStack
         }
 
         [Test]
+        [Description("Verify that filtering by 'OnePlus' vendor displays only OnePlus products.")]
         public void VerifyVendorFilterFunctionality()
         {
             page.FilterByVendor("OnePlus");
@@ -52,6 +56,7 @@ namespace BrowserStack
         }
 
         [Test]
+        [Description("Verify that clicking on the favorite icon for each product adds it to the favorites tab and the count updates correctly.")]
         public void VerifyAddToFavoritesForAllProducts()
         {
             int expectedCount = 0;
@@ -65,7 +70,6 @@ namespace BrowserStack
 
                 Thread.Sleep(1000);
                 page.NavigateToFavoritesTab();
-
                 int actualCount = page.GetFavoritesCount();
                 Assert.AreEqual(expectedCount, actualCount, "Favorites count mismatch.");
             }
