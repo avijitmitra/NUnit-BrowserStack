@@ -30,10 +30,37 @@ namespace BrowserStack
       );
     }
 
-    [TearDown]
+
+        public void MarkTestStatus(string status, string reason)
+        {
+            try
+            {
+                IJavaScriptExecutor jse = (IJavaScriptExecutor)driver;
+                jse.ExecuteScript("browserstack_executor: {\"action\": \"setSessionStatus\", " +
+                                  "\"arguments\": {\"status\": \"" + status + "\", \"reason\": \"" + reason + "\"}}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error while setting BrowserStack session status: " + ex.Message);
+            }
+        }
+
+        [TearDown]
     public void Cleanup()
     {
-      driver.Quit();
-    }
+            driver.Quit();
+
+            var status = TestContext.CurrentContext.Result.Outcome.Status;
+            var message = TestContext.CurrentContext.Result.Message;
+
+            if (status == NUnit.Framework.Interfaces.TestStatus.Passed)
+            {
+                MarkTestStatus("passed", "Test passed successfully.");
+            }
+            else
+            {
+                MarkTestStatus("failed", $"Test failed: {message}");
+            }
+        }
   }
 }
